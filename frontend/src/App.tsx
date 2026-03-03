@@ -6,7 +6,7 @@ import AdminDashboard from './AdminDashboard';
 import AdminLogin from './AdminLogin';
 import ClientIntake from './ClientIntake';
 import Spline from '@splinetool/react-spline';
-import { ShieldAlert, CheckCircle, Fingerprint, Lock, FileText, Activity, Database, Shield, Globe, Terminal } from 'lucide-react';
+import { ShieldAlert, CheckCircle, Fingerprint, Lock, FileText, Database, Terminal } from 'lucide-react';
 
 // Fade in component for scroll animations
 interface FadeInProps {
