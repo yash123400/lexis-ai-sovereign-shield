@@ -1,0 +1,17 @@
+{
+    "valuation_id": "VAL-ab2c926c",
+    "generated_at": "2026-02-28T11:07:53.582163Z",
+    "client_name": null,
+    "company": "N/A",
+    "metrics": {
+        "jurimetric_score": 100,
+        "expected_value_gbp": 187500.0,
+        "classification": "VIP/High-Yield"
+    },
+    "parameters": {
+        "practice_area": null,
+        "claim_value": null,
+        "location": null,
+        "director_verified": false
+    }
+}

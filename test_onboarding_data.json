@@ -1,0 +1,20 @@
+{
+    "client_info": {
+        "full_name": "Alexander Sterling",
+        "email": "a.sterling@sterling-holdings.co.uk",
+        "phone": "+44 7700 900123",
+        "company_number": "01026167"
+    },
+    "verification_results": {
+        "company_name": "BARCLAYS PLC",
+        "status": "active",
+        "registered_address": "1 Churchill Place, London, E14 5HP",
+        "risk_score": "Low",
+        "aml_check": "Verified via Companies House API 2026"
+    },
+    "matter_details": {
+        "practice_area": "Commercial Property",
+        "description": "Lease acquisition for new Mayfair office suite.",
+        "estimated_value": "£2,500,000"
+    }
+}

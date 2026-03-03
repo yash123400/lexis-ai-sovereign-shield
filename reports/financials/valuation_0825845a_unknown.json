@@ -1,0 +1,17 @@
+{
+    "valuation_id": "VAL-0825845a",
+    "generated_at": "2026-02-28T11:53:43.891420Z",
+    "client_name": null,
+    "company": "N/A",
+    "metrics": {
+        "jurimetric_score": 10,
+        "expected_value_gbp": 5.0,
+        "classification": "Standard/Nurture"
+    },
+    "parameters": {
+        "practice_area": null,
+        "claim_value": null,
+        "location": null,
+        "director_verified": false
+    }
+}

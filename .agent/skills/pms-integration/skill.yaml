@@ -1,0 +1,20 @@
+---
+description: "Syncs verified onboarding data to the firm's Practice Management System. Input: Verified_JSON_Report."
+---
+
+# Sync Contact to PMS 
+
+**Description**:
+Uses the `pms_client.py` library to push verified JSON compliance payloads directly into the firm's established Practice Management System (e.g., Clio).
+
+**Trigger**:
+When the Onboarding-Captain finishes the KYC/AML check, the JSON report generated should be passed to this skill.
+
+**Inputs**:
+- `Verified_JSON_Report`: The JSON string containing client details (Name, Address, Company).
+
+**Actions**:
+1. Run `pms_client.py:create_legal_contact()` parsing the JSON.
+2. Checks for duplicate existing contacts.
+3. Provisions a new `Person` or `Company` profile if no match is found.
+4. Returns the `client_id` provided by the remote system.

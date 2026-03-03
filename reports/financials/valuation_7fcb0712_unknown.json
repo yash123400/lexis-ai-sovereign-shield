@@ -1,0 +1,17 @@
+{
+    "valuation_id": "VAL-7fcb0712",
+    "generated_at": "2026-02-28T11:30:27.840572Z",
+    "client_name": null,
+    "company": "N/A",
+    "metrics": {
+        "jurimetric_score": 10,
+        "expected_value_gbp": 5.0,
+        "classification": "Standard/Nurture"
+    },
+    "parameters": {
+        "practice_area": null,
+        "claim_value": null,
+        "location": null,
+        "director_verified": false
+    }
+}

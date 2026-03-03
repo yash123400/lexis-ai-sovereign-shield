@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  /* Corporate Legal Palette - Subdue Luxury */
+  --color-midnight: #F8FAFC; /* Breathable Light Background */
+  --color-ivory: #0F172A;    /* Deep Navy Primary Text */
+  --color-london-blue: #1E3A8A; /* Traditional Navy Accent */
+  --color-legal-gray: #64748B;  /* Slate Gray for secondary text */
+  --color-legal-border: #E2E8F0; /* Ultra-thin subtle borders */
+  --color-legal-gold: #B59410;  /* Muted metallic gold for special accents */
+  --color-legal-emerald: #065F46; /* Muted Emerald for success */
+
+  /* Typography */
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--color-midnight);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Hide Spline Watermark Logo */
+[href*="spline.design"],
+a[href*="spline"],
+div[class*="spline-watermark"],
+#spline-watermark {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Global Transition */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
