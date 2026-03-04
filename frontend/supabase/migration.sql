@@ -212,7 +212,8 @@ CREATE POLICY "Service role full access clio_tokens"
     WITH CHECK (auth.role() = 'service_role');
 
 -- =====================================================
--- REALTIME (Enable for Audit Logs — read via authenticated session)
+-- REALTIME
+-- Tables already added to supabase_realtime publication
+-- via prior migration — no action needed here.
 -- =====================================================
-ALTER PUBLICATION supabase_realtime ADD TABLE audit_logs;
-ALTER PUBLICATION supabase_realtime ADD TABLE sovereign_intakes;
+

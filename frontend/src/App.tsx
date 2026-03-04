@@ -40,35 +40,15 @@ export function Home() {
     <div className="font-sans min-h-screen bg-slate-50 text-slate-800 selection:bg-london-blue selection:text-white">
 
       {/* --- HERO SECTION --- */}
-      <section className="relative h-screen w-full flex flex-col md:flex-row items-center justify-center overflow-hidden bg-white">
-
-        {/* Spline Background with light overlay */}
-        <div className="absolute md:inset-0 inset-x-0 top-0 h-1/2 md:h-full z-0 pointer-events-none md:pointer-events-auto overflow-hidden opacity-80">
-          <div className="absolute top-0 left-0 w-full h-[calc(100%+80px)] grayscale" style={{ position: 'relative' }}>
-            <style>{`
-              .spline-hero canvas,
-              .spline-hero > div,
-              .spline-hero > div > canvas {
-                width: 100% !important;
-                height: 100% !important;
-              }
-            `}</style>
-            <div className="spline-hero" style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
-              <Suspense fallback={<SplinePlaceholder />}>
-                <Spline scene="https://prod.spline.design/4tuh3W7pu-zpL4Bp/scene.splinecode" />
-              </Suspense>
-            </div>
-          </div>
-          <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
-        </div>
-
-        <div className="relative z-10 flex flex-col items-center justify-center h-full w-full px-6 md:px-12 mt-48 md:mt-0 pt-20 md:pt-0 bg-gradient-to-t from-white via-white/80 md:via-transparent to-transparent md:bg-none pointer-events-none">
-          <div className="pointer-events-auto max-w-5xl text-center flex flex-col items-center">
+      <section className="relative h-screen w-full flex flex-col md:flex-row items-center justify-between overflow-hidden bg-slate-950 px-6 md:px-24">
+        {/* Left Side: Content */}
+        <div className="relative z-10 flex flex-col items-start justify-center h-full w-full md:w-1/2 pt-20 md:pt-0 pointer-events-none text-left">
+          <div className="pointer-events-auto max-w-2xl flex flex-col items-start">
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: "easeOut" }}
-              className="text-4xl sm:text-5xl md:text-7xl font-serif font-bold leading-tight tracking-tight mb-8 text-slate-900 shadow-sm text-center"
+              className="text-4xl sm:text-5xl md:text-7xl font-sans font-bold leading-tight tracking-tight mb-8 text-white shadow-sm"
             >
               The Lexis-AI <span className="text-london-blue">Orchestrator.</span><br className="hidden md:block" />
               Sovereign Legal Intelligence.
@@ -78,7 +58,7 @@ export function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-              className="text-lg md:text-2xl text-slate-500 md:leading-relaxed mb-8 max-w-4xl font-medium text-center"
+              className="text-lg md:text-2xl text-slate-300 md:leading-relaxed mb-8 max-w-xl font-medium"
             >
               The first full-stack legal concierge for the 2026 Sovereign Grid. <br className="hidden md:block" />
               Intelligent Intake. OTP Identity Tethering. Real-time Conflict Monitoring.
@@ -97,70 +77,88 @@ export function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-6 w-full"
+              className="flex flex-col sm:flex-row flex-wrap justify-start items-center gap-6 w-full"
             >
-              <a href="https://calendly.com/lexis-ai-partner/15min" target="_blank" rel="noopener noreferrer" className="px-10 py-5 w-full sm:w-auto bg-london-blue text-white font-bold uppercase tracking-widest text-xs text-center rounded shadow-xl hover:bg-slate-900 transition-all duration-300 transform active:scale-95">
+              <a href="https://calendly.com/lexis-ai-partner/15min" target="_blank" rel="noopener noreferrer" className="px-10 py-5 w-full sm:w-auto bg-london-blue text-white font-bold uppercase tracking-widest text-xs text-center rounded-lg hover:bg-slate-800 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_rgba(255,255,255,0.5)] transform active:scale-95">
                 Request a Workflow Audit
               </a>
-              <a href="https://lexis-ai-compliance-concierge.vercel.app/" target="_blank" rel="noopener noreferrer" className="px-10 py-5 w-full sm:w-auto text-center bg-white border border-slate-200 text-slate-900 font-bold uppercase tracking-widest text-xs rounded hover:bg-slate-50 transition-all duration-300 shadow-md">
+              <a href="https://lexis-ai-compliance-concierge.vercel.app/" target="_blank" rel="noopener noreferrer" className="px-10 py-5 w-full sm:w-auto text-center bg-white/5 border border-white/20 text-white font-bold uppercase tracking-widest text-xs rounded-lg hover:bg-white/10 transition-all duration-300 shadow-md">
                 Live Demo
               </a>
-              <a href="/Security_and_Privacy.pdf" target="_blank" rel="noopener noreferrer" className="px-10 py-5 w-full sm:w-auto bg-white border border-emerald-200 text-emerald-600 font-bold uppercase tracking-widest text-xs text-center rounded hover:bg-emerald-50 transition-all duration-300 flex items-center justify-center gap-3 shadow-md">
+              <a href="/Security_and_Privacy.pdf" target="_blank" rel="noopener noreferrer" className="px-10 py-5 w-full sm:w-auto bg-white/5 border border-emerald-500/30 text-emerald-400 font-bold uppercase tracking-widest text-xs text-center rounded-lg hover:bg-emerald-500/10 transition-all duration-300 flex items-center justify-center gap-3 shadow-md">
                 <ShieldAlert size={18} />
                 Security protocol
               </a>
             </motion.div>
           </div>
         </div>
+
+        {/* Right Side: Spline 3D */}
+        <div className="relative w-full md:w-1/2 h-1/2 md:h-full z-0 overflow-hidden flex items-center justify-center">
+          <style>{`
+            .spline-hero canvas {
+              width: 100% !important;
+              height: 100% !important;
+            }
+          `}</style>
+          <div className="spline-hero w-full h-full scale-110 translate-x-12">
+            <Suspense fallback={<SplinePlaceholder />}>
+              <Spline scene="https://prod.spline.design/4tuh3W7pu-zpL4Bp/scene.splinecode" />
+            </Suspense>
+          </div>
+        </div>
       </section>
 
       {/* --- THE DIFFERENTIATOR GRID --- */}
-      <section className="py-32 px-6 md:px-16 container mx-auto max-w-7xl">
-        <FadeIn className="text-center mb-24">
-          <h2 className="text-4xl md:text-6xl font-serif font-bold text-slate-900 mb-8 tracking-tight">The Legal Differentiator.</h2>
+      <section id="how-it-works" className="py-32 px-6 md:px-16 container mx-auto max-w-7xl bg-slate-950 rounded-3xl my-10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-london-blue/10 to-transparent pointer-events-none"></div>
+        <FadeIn className="text-center mb-24 relative z-10 w-full">
+          <h2 className="text-4xl md:text-6xl font-serif font-bold text-white mb-8 tracking-tight">The Legal Differentiator.</h2>
           <p className="text-slate-400 text-lg md:text-xl max-w-3xl mx-auto font-medium leading-relaxed">
             Generic LLMs converse. Lexis-AI orchestrates outcomes with forensic precision and deterministic logic.
           </p>
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          <FadeIn delay={0.1} className="bg-white border border-slate-100 shadow-xl shadow-slate-200/50 hover:border-london-blue/30 transition-all p-10 rounded-sm flex flex-col items-center text-center group">
-            <div className="h-20 w-20 bg-slate-50 text-london-blue rounded-full flex items-center justify-center mb-8 border border-slate-100 group-hover:bg-london-blue group-hover:text-white transition-all">
+        <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 relative z-10">
+          <FadeIn delay={0.1} className="md:col-span-2 md:row-span-2 bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-2xl flex flex-col justify-end text-left group hover:bg-white/10 transition-colors">
+            <div className="h-20 w-20 bg-white/10 text-london-blue rounded-xl flex items-center justify-center mb-auto border border-white/10 shadow-inner group-hover:bg-london-blue group-hover:text-white transition-all">
               <Terminal size={32} />
             </div>
-            <h3 className="text-xl font-serif font-bold text-slate-900 mb-4">Intelligent Intake</h3>
-            <p className="text-slate-500 font-medium leading-relaxed text-sm">
-              Our "What happened?" classifier tags matter types and swaps checklists dynamically based on intent.
+            <h3 className="text-3xl font-serif font-bold text-white mb-4 mt-8">Intelligent Intake</h3>
+            <p className="text-slate-300 font-medium leading-relaxed">
+              Our "What happened?" classifier tags matter types and swaps checklists dynamically based on intent. Handles end-to-end KYC and AML without human intervention, maintaining absolute sovereign control.
             </p>
           </FadeIn>
 
-          <FadeIn delay={0.2} className="bg-white border border-slate-100 shadow-xl shadow-slate-200/50 hover:border-london-blue/30 transition-all p-10 rounded-sm flex flex-col items-center text-center group">
-            <div className="h-20 w-20 bg-slate-50 text-london-blue rounded-full flex items-center justify-center mb-8 border border-slate-100 group-hover:bg-london-blue group-hover:text-white transition-all">
-              <Lock size={32} />
+          <FadeIn delay={0.2} className="md:col-span-2 md:row-span-1 bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl flex items-center justify-start text-left group hover:bg-white/10 transition-colors">
+            <div className="h-16 w-16 bg-white/10 text-london-blue rounded-xl flex items-center justify-center mr-6 border border-white/10 shrink-0 group-hover:bg-london-blue group-hover:text-white transition-all">
+              <Lock size={28} />
             </div>
-            <h3 className="text-xl font-serif font-bold text-slate-900 mb-4">Identity Tethering</h3>
-            <p className="text-slate-500 font-medium leading-relaxed text-sm">
-              SMS/OTP verification secures the digital session before the first scan to ensure 100% lead recovery.
+            <div>
+              <h3 className="text-xl font-serif font-bold text-white mb-2">Identity Tethering</h3>
+              <p className="text-slate-300 font-medium leading-relaxed text-sm">
+                SMS/OTP verification secures the digital session before the first scan to ensure 100% lead recovery. E.164 normalization guarantees reachability.
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.3} className="md:col-span-1 md:row-span-1 bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl flex flex-col text-left group hover:bg-white/10 transition-colors">
+            <div className="h-14 w-14 bg-white/10 text-emerald-400 rounded-xl flex items-center justify-center mb-6 border border-white/10 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+              <ShieldAlert size={28} />
+            </div>
+            <h3 className="text-lg font-serif font-bold text-white mb-2">Sovereign Monitoring</h3>
+            <p className="text-slate-300 font-medium leading-relaxed text-sm">
+              Continuous cross-referencing against Clio to intercept conflicts in real-time.
             </p>
           </FadeIn>
 
-          <FadeIn delay={0.3} className="bg-white border border-slate-100 shadow-xl shadow-slate-200/50 hover:border-london-blue/30 transition-all p-10 rounded-sm flex flex-col items-center text-center group">
-            <div className="h-20 w-20 bg-slate-50 text-london-blue rounded-full flex items-center justify-center mb-8 border border-slate-100 group-hover:bg-london-blue group-hover:text-white transition-all">
-              <ShieldAlert size={32} />
+          <FadeIn delay={0.4} className="md:col-span-1 md:row-span-1 bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-2xl flex flex-col text-left group hover:bg-white/10 transition-colors">
+            <div className="h-14 w-14 bg-white/10 text-london-blue rounded-xl flex items-center justify-center mb-6 border border-white/10 group-hover:bg-london-blue group-hover:text-white transition-all">
+              <Fingerprint size={28} />
             </div>
-            <h3 className="text-xl font-serif font-bold text-slate-900 mb-4">Sovereign Monitoring</h3>
-            <p className="text-slate-500 font-medium leading-relaxed text-sm">
-              Continuous cross-referencing against Clio and official registries to intercept conflicts in real-time.
-            </p>
-          </FadeIn>
-
-          <FadeIn delay={0.4} className="bg-white border border-slate-100 shadow-xl shadow-slate-200/50 hover:border-london-blue/30 transition-all p-10 rounded-sm flex flex-col items-center text-center group">
-            <div className="h-20 w-20 bg-slate-50 text-london-blue rounded-full flex items-center justify-center mb-8 border border-slate-100 group-hover:bg-london-blue group-hover:text-white transition-all">
-              <Fingerprint size={32} />
-            </div>
-            <h3 className="text-xl font-serif font-bold text-slate-900 mb-4">Reasoning Vault</h3>
-            <p className="text-slate-500 font-medium leading-relaxed text-sm">
-              OCR-to-Text reasoning detects discrepancies between chat claims and legal registries automatically.
+            <h3 className="text-lg font-serif font-bold text-white mb-2">Reasoning Vault</h3>
+            <p className="text-slate-300 font-medium leading-relaxed text-sm">
+              OCR-to-Text reasoning detects deep discrepancies automatically.
             </p>
           </FadeIn>
         </div>

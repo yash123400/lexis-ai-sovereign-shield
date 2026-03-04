@@ -4,6 +4,16 @@ import IntakeReview from './IntakeReview';
 import AuditLogs from './AuditLogs';
 import { Shield, Key, MapPin, Clock, Lock, Search, Fingerprint, ShieldAlert, RefreshCw, AlertTriangle } from 'lucide-react';
 import useSessionTimeout from './hooks/useSessionTimeout';
+import { AreaChart } from '@tremor/react';
+
+const mockPerformanceData = [
+    { date: 'Jan', 'Confidence Score': 80, 'Financial Alpha': 40 },
+    { date: 'Feb', 'Confidence Score': 85, 'Financial Alpha': 45 },
+    { date: 'Mar', 'Confidence Score': 90, 'Financial Alpha': 50 },
+    { date: 'Apr', 'Confidence Score': 88, 'Financial Alpha': 60 },
+    { date: 'May', 'Confidence Score': 92, 'Financial Alpha': 70 },
+    { date: 'Jun', 'Confidence Score': 95, 'Financial Alpha': 85 },
+];
 
 interface FirmStatus {
     id: string;
@@ -148,7 +158,8 @@ export default function AdminDashboard() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-london-blue selection:text-white pt-28 pb-16 px-10">
+        <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-london-blue selection:text-white pt-28 pb-16 px-10 relative">
+            <div className="absolute top-0 inset-x-0 h-96 bg-gradient-to-b from-london-blue/20 to-transparent pointer-events-none"></div>
             {/* FIX 2.2: Session Expiry Banner */}
             <AnimatePresence>
                 {sessionExpired && (
@@ -199,8 +210,8 @@ export default function AdminDashboard() {
             `}} />
 
             {/* --- MASTER STATUS BAR --- */}
-            <div className="flex bg-white border border-slate-200 shadow-xl shadow-slate-200/50 rounded-sm p-4 mb-10 w-full overflow-hidden items-center text-[10px] tracking-[0.2em] uppercase font-bold text-slate-400">
-                <div className="flex items-center space-x-3 text-london-blue border-r border-slate-100 pr-8 mr-8">
+            <div className="flex bg-white/5 backdrop-blur-lg border border-white/10 shadow-lg rounded-2xl p-4 mb-10 w-full overflow-hidden items-center text-[10px] tracking-[0.2em] uppercase font-bold text-slate-400 relative z-10">
+                <div className="flex items-center space-x-3 text-london-blue border-r border-white/10 pr-8 mr-8">
                     <Shield size={18} />
                     <span className="font-serif tracking-tight normal-case text-lg font-bold">Lexis-AI Command</span>
                 </div>
@@ -235,20 +246,42 @@ export default function AdminDashboard() {
 
                 {/* LEFT: FIRM AGGREGATOR */}
                 <div className="col-span-12 lg:col-span-8 flex flex-col">
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center justify-between mb-8 relative z-10">
                         <div>
-                            <h2 className="text-3xl font-serif font-bold text-slate-900 tracking-tight">Silo Navigator</h2>
+                            <h2 className="text-3xl font-serif font-bold text-white tracking-tight">Silo Navigator</h2>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Sovereign Law Firm Management</p>
                         </div>
                         <div className="relative">
-                            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
+                            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                             <input
                                 type="text"
                                 placeholder="Search by Firm ID or Reference..."
-                                className="bg-white border border-slate-200 rounded-sm pl-12 pr-6 py-3.5 text-xs w-80 focus:border-london-blue outline-none transition-all shadow-sm font-medium"
+                                className="bg-white/5 backdrop-blur-md border border-white/10 text-white rounded-2xl pl-12 pr-6 py-3.5 text-xs w-80 focus:border-london-blue outline-none transition-all shadow-sm font-medium placeholder-slate-500"
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
+                    </div>
+
+                    {/* Network Alpha Performance Overview */}
+                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 w-full mb-8 relative z-10">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-sm font-bold text-slate-300 uppercase tracking-widest">Network Alpha & Confidence Scoring</h3>
+                            <div className="flex items-center space-x-4 text-[10px] uppercase font-bold text-slate-400">
+                                <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-500"></div>Confidence</span>
+                                <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div>Alpha</span>
+                            </div>
+                        </div>
+                        <AreaChart
+                            className="h-32 mt-4"
+                            data={mockPerformanceData}
+                            index="date"
+                            categories={['Confidence Score', 'Financial Alpha']}
+                            colors={['blue', 'emerald']}
+                            valueFormatter={(number) => `${number.toString()}%`}
+                            showYAxis={false}
+                            showGridLines={false}
+                            showLegend={false}
+                        />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 overflow-y-auto pr-4 custom-scrollbar pb-10">
@@ -260,39 +293,39 @@ export default function AdminDashboard() {
                         ) : firms.filter(f => f.name.toLowerCase().includes(searchQuery.toLowerCase()) || f.id.includes(searchQuery)).map(firm => (
                             <motion.div
                                 key={firm.id}
-                                whileHover={{ y: -6, boxShadow: '0 20px 40px -10px rgba(15, 23, 42, 0.1)' }}
+                                whileHover={{ y: -6, boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.3)' }}
                                 onClick={() => setSelectedFirm(firm)}
-                                className={`group p-8 bg-white border rounded-sm cursor-pointer transition-all duration-300 relative overflow-hidden shadow-sm
-                                    ${selectedFirm?.id === firm.id ? 'border-london-blue border-2' : 'border-slate-100 hover:border-london-blue/30'}
-                                    ${firm.lead_velocity === 'spike' ? 'bg-red-50/20' : ''}`}
+                                className={`group p-8 bg-white/5 backdrop-blur-md border rounded-2xl cursor-pointer transition-all duration-300 relative overflow-hidden shadow-sm
+                                    ${selectedFirm?.id === firm.id ? 'border-london-blue border-2' : 'border-white/10 hover:border-london-blue/50'}
+                                    ${firm.lead_velocity === 'spike' ? 'bg-red-500/10' : ''}`}
                             >
                                 <div className="flex justify-between items-start mb-6">
                                     <div>
                                         <p className="font-mono text-[9px] text-slate-400 font-bold tracking-tight mb-1 uppercase">{firm.id}</p>
-                                        <h3 className="text-lg font-serif font-bold text-slate-900 group-hover:text-london-blue transition-colors truncate">{firm.name}</h3>
+                                        <h3 className="text-lg font-serif font-bold text-white group-hover:text-london-blue transition-colors truncate">{firm.name}</h3>
                                     </div>
-                                    <div className={`p-2.5 rounded-sm border ${firm.oauth_status === 'healthy' ? 'bg-slate-50 border-slate-100 text-london-blue' : 'bg-red-50 border-red-100 text-red-600'}`}>
+                                    <div className={`p-2.5 rounded-xl border ${firm.oauth_status === 'healthy' ? 'bg-white/10 border-white/10 text-london-blue' : 'bg-red-500/20 border-red-500/30 text-red-500'}`}>
                                         <Key size={16} className={firm.oauth_status === 'healthy' ? 'opacity-80' : 'animate-pulse'} />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mb-6">
-                                    <div className="bg-slate-50/50 p-3 rounded-sm border border-slate-100">
+                                    <div className="bg-white/5 p-3 rounded-xl border border-white/5">
                                         <p className="text-[8px] text-slate-400 font-bold uppercase mb-1.5 tracking-widest">EV Ticker</p>
                                         <p className="text-sm font-mono font-bold text-london-blue">{firm.ev_ticker}</p>
                                     </div>
-                                    <div className="bg-slate-50/50 p-3 rounded-sm border border-slate-100">
+                                    <div className="bg-white/5 p-3 rounded-xl border border-white/5">
                                         <p className="text-[8px] text-slate-400 font-bold uppercase mb-1.5 tracking-widest">Sentinel Score</p>
                                         <div className="flex items-center gap-2">
-                                            <div className="flex-1 bg-slate-200 h-1 rounded-full overflow-hidden">
-                                                <div className="bg-green-500 h-full" style={{ width: `${firm.sentinel_score}%` }}></div>
+                                            <div className="flex-1 bg-slate-800 h-1 rounded-full overflow-hidden">
+                                                <div className="bg-emerald-400 h-full shadow-[0_0_10px_rgba(52,211,153,0.8)]" style={{ width: `${firm.sentinel_score}%` }}></div>
                                             </div>
-                                            <p className="text-[10px] text-slate-900 font-bold">{firm.sentinel_score}%</p>
+                                            <p className="text-[10px] text-white font-bold">{firm.sentinel_score}%</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center justify-between pt-5 border-t border-slate-50">
+                                <div className="flex items-center justify-between pt-5 border-t border-white/10">
                                     <div className="flex items-center space-x-4">
                                         <div className="flex items-center gap-2">
                                             <div className={`w-2 h-2 rounded-full ${firm.drift_alert ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'}`}></div>
@@ -314,7 +347,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* RIGHT: DRILL-DOWN REMEDIATION */}
-                <div className="col-span-12 lg:col-span-4 h-full">
+                <div className="col-span-12 lg:col-span-4 h-full relative z-10">
                     <AnimatePresence mode="wait">
                         {selectedFirm ? (
                             <motion.div
@@ -322,18 +355,18 @@ export default function AdminDashboard() {
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: 20 }}
-                                className="bg-white border border-slate-100 rounded-sm h-full flex flex-col overflow-hidden shadow-2xl"
+                                className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl h-full flex flex-col overflow-hidden shadow-2xl"
                             >
-                                <div className="p-10 pb-8 bg-slate-50">
+                                <div className="p-10 pb-8 bg-white/5">
                                     <div className="flex justify-between items-start mb-8">
                                         <div>
-                                            <h2 className="text-2xl font-serif font-bold text-slate-900 mb-2 tracking-tight">{selectedFirm.name}</h2>
+                                            <h2 className="text-2xl font-serif font-bold text-white mb-2 tracking-tight">{selectedFirm.name}</h2>
                                             <div className="flex items-center text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">
                                                 <MapPin size={12} className="mr-2 text-london-blue" />
                                                 Data Residency: {selectedFirm.data_residency}
                                             </div>
                                         </div>
-                                        <div className="px-3 py-1.5 bg-white border border-slate-100 rounded-sm shadow-sm text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                        <div className="px-3 py-1.5 bg-white/10 border border-white/10 rounded-lg shadow-sm text-[10px] font-bold text-slate-300 uppercase tracking-widest">
                                             Silo Locked
                                         </div>
                                     </div>
@@ -341,34 +374,34 @@ export default function AdminDashboard() {
                                     <div className="grid grid-cols-2 gap-5 mb-6">
                                         <button
                                             onClick={() => handleForceRefresh(selectedFirm.id)}
-                                            className="bg-white border border-slate-200 text-slate-900 text-[10px] font-bold py-4 uppercase tracking-widest hover:border-london-blue transition-all flex items-center justify-center space-x-3 rounded-sm shadow-sm"
+                                            className="bg-white/10 border border-white/10 text-white text-[10px] font-bold py-4 uppercase tracking-widest hover:border-london-blue transition-all flex items-center justify-center space-x-3 rounded-lg shadow-sm"
                                         >
                                             <Key size={14} className="text-london-blue" />
                                             <span>Oauth Repair</span>
                                         </button>
                                         <button
                                             onClick={() => handleRedactionAudit(selectedFirm.id)}
-                                            className={`text-[10px] font-bold py-4 uppercase tracking-widest transition-all flex items-center justify-center space-x-3 border rounded-sm shadow-sm
-                                            ${selectedFirm.logs.some(l => l.pii_status === 'flagged') ? 'bg-red-50 text-red-600 border-red-200 animate-pulse' : 'bg-white border-slate-200 text-slate-900 hover:border-london-blue'}`}
+                                            className={`text-[10px] font-bold py-4 uppercase tracking-widest transition-all flex items-center justify-center space-x-3 border rounded-lg shadow-sm
+                                            ${selectedFirm.logs.some(l => l.pii_status === 'flagged') ? 'bg-red-500/20 text-red-400 border-red-500/30 animate-pulse' : 'bg-white/10 border-white/10 text-white hover:border-london-blue'}`}
                                         >
-                                            <Shield size={14} className={selectedFirm.logs.some(l => l.pii_status === 'flagged') ? 'text-red-500' : 'text-london-blue'} />
+                                            <Shield size={14} className={selectedFirm.logs.some(l => l.pii_status === 'flagged') ? 'text-red-400' : 'text-london-blue'} />
                                             <span>PII Scrub</span>
                                         </button>
                                     </div>
 
                                     <button
                                         onClick={() => setShowImpersonateModal(true)}
-                                        className="w-full bg-london-blue text-white text-[10px] font-bold py-5 uppercase tracking-widest hover:bg-slate-900 transition-all flex items-center justify-center space-x-3 mb-8 rounded-sm shadow-xl"
+                                        className="w-full bg-london-blue text-white text-[10px] font-bold py-5 uppercase tracking-widest hover:bg-slate-800 transition-all flex items-center justify-center space-x-3 mb-8 rounded-lg shadow-[0_0_15px_rgba(8,145,178,0.5)] active:scale-95"
                                     >
                                         <Fingerprint size={16} />
                                         <span>Architect Override</span>
                                     </button>
 
-                                    <div className="pt-6 border-t border-slate-200">
+                                    <div className="pt-6 border-t border-white/10">
                                         <button
                                             onClick={handleGlobalLockdown}
                                             disabled={lockingDown}
-                                            className="w-full border border-red-100 text-red-500 text-[10px] font-bold py-4 uppercase tracking-widest hover:bg-red-50 transition-all flex items-center justify-center space-x-3 rounded-sm"
+                                            className="w-full border border-red-500/30 text-red-500 text-[10px] font-bold py-4 uppercase tracking-widest hover:bg-red-500/10 transition-all flex items-center justify-center space-x-3 rounded-lg"
                                         >
                                             <ShieldAlert size={14} />
                                             <span>{lockingDown ? 'Severing Silos...' : 'Global Silo Lockdown'}</span>
@@ -378,23 +411,25 @@ export default function AdminDashboard() {
 
                                 <div className="flex-1 flex flex-col overflow-hidden">
                                     {/* Sub-navigation for Drill-down */}
-                                    <div className="flex bg-white border-y border-slate-100">
+                                    <div className="flex bg-white/5 border-y border-white/10">
                                         <button
                                             onClick={() => setDetailView('system')}
-                                            className={`flex-1 py-5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${detailView === 'system' ? 'text-london-blue border-b-2 border-london-blue bg-slate-50/50' : 'text-slate-400 hover:text-slate-900'}`}
+                                            className={`flex-1 py-5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${detailView === 'system' ? 'text-london-blue border-b-2 border-london-blue bg-white/10' : 'text-slate-500 hover:text-white'}`}
                                         >
                                             Audit Protocol
                                         </button>
                                         <button
                                             onClick={() => setDetailView('intakes')}
-                                            className={`flex-1 flex items-center justify-center py-5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${detailView === 'intakes' ? 'text-london-blue border-b-2 border-london-blue bg-slate-50/50' : 'text-slate-400 hover:text-slate-900'}`}
+                                            className={`flex-1 flex items-center justify-center py-5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${detailView === 'intakes' ? 'text-london-blue border-b-2 border-london-blue bg-white/10' : 'text-slate-500 hover:text-white'}`}
                                         >
                                             Pending Intakes
-                                            <span className="ml-3 bg-red-500 text-white text-[9px] px-2 py-0.5 rounded-sm font-bold">1</span>
+                                            <span className="ml-3 bg-red-500 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">1</span>
                                         </button>
                                     </div>
 
-                                    <div className="flex-1 overflow-y-auto custom-scrollbar bg-white">
+                                    <div className="flex-1 overflow-y-auto custom-scrollbar bg-slate-950/50 p-4">
+                                        {/* Simplified place-holder list for minimalist presentation */}
+                                        <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Activity Log</div>
                                         {detailView === 'system' ? (
                                             <AuditLogs />
                                         ) : (
@@ -404,12 +439,12 @@ export default function AdminDashboard() {
                                 </div>
                             </motion.div>
                         ) : (
-                            <div className="bg-slate-100/50 border-2 border-slate-200 border-dashed rounded-sm h-full flex flex-col items-center justify-center text-center p-16">
-                                <div className="w-20 h-20 bg-white border border-slate-200 rounded-full flex items-center justify-center mb-8 shadow-sm">
-                                    <Lock size={32} className="text-slate-200" />
+                            <div className="bg-white/5 border-2 border-white/10 border-dashed rounded-2xl h-full flex flex-col items-center justify-center text-center p-16">
+                                <div className="w-20 h-20 bg-white/10 border border-white/10 rounded-full flex items-center justify-center mb-8 shadow-sm">
+                                    <Lock size={32} className="text-slate-400" />
                                 </div>
-                                <h3 className="text-2xl font-serif font-bold text-slate-300 mb-4">Select Sovereign Silo</h3>
-                                <p className="text-[10px] font-bold text-slate-300 leading-relaxed uppercase tracking-[0.3em] max-w-[240px] mx-auto">
+                                <h3 className="text-2xl font-serif font-bold text-white mb-4">Select Sovereign Silo</h3>
+                                <p className="text-[10px] font-bold text-slate-400 leading-relaxed uppercase tracking-[0.3em] max-w-[240px] mx-auto">
                                     Architect Authentication active. <br /> Select a firm node for administrative remediation.
                                 </p>
                             </div>
