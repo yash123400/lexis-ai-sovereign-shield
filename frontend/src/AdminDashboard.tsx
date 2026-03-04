@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import IntakeReview from './IntakeReview';
 import AuditLogs from './AuditLogs';
-import { Shield, Key, MapPin, Clock, Lock, Search, Fingerprint, ShieldAlert, RefreshCw } from 'lucide-react';
+import { Shield, Key, MapPin, Clock, Lock, Search, Fingerprint, ShieldAlert, RefreshCw, AlertTriangle } from 'lucide-react';
+import useSessionTimeout from './hooks/useSessionTimeout';
 
 interface FirmStatus {
     id: string;
@@ -29,8 +30,18 @@ export default function AdminDashboard() {
     const [showImpersonateModal, setShowImpersonateModal] = useState(false);
     const [lockingDown, setLockingDown] = useState(false);
     const [detailView, setDetailView] = useState<'system' | 'intakes'>('intakes');
+    const [sessionExpired, setSessionExpired] = useState(false);
 
-    const API_BASE = import.meta.env.VITE_ADMIN_API_BASE || "https://lexis-ai-compliance-concierge.vercel.app/api/admin";
+    // FIX 2.2: 30-minute inactivity timeout — SRA Technology Guidelines 2025
+    useSessionTimeout({
+        timeoutMs: 30 * 60 * 1000,
+        onTimeout: useCallback(() => {
+            setSessionExpired(true);
+            setTimeout(() => window.location.reload(), 4000);
+        }, []),
+    });
+
+    const API_BASE = import.meta.env.VITE_ADMIN_API_BASE || '';
 
     const fetchData = async () => {
         try {
@@ -138,6 +149,31 @@ export default function AdminDashboard() {
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-london-blue selection:text-white pt-28 pb-16 px-10">
+            {/* FIX 2.2: Session Expiry Banner */}
+            <AnimatePresence>
+                {sessionExpired && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-md flex items-center justify-center"
+                        role="alertdialog"
+                        aria-modal="true"
+                        aria-label="Session expired"
+                    >
+                        <div className="bg-white border border-slate-200 rounded shadow-2xl p-12 max-w-md text-center">
+                            <AlertTriangle className="text-amber-500 mx-auto mb-6" size={48} aria-hidden="true" />
+                            <h2 className="text-2xl font-serif font-bold text-slate-900 mb-4">Session Expired</h2>
+                            <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                                Your session timed out after 30 minutes of inactivity, as required by SRA Technology Guidelines.
+                                You will be redirected to login shortly.
+                            </p>
+                            <div className="w-full bg-slate-100 rounded-full h-1 overflow-hidden">
+                                <motion.div className="bg-london-blue h-full" initial={{ width: '100%' }} animate={{ width: '0%' }} transition={{ duration: 4 }} />
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <style dangerouslySetInnerHTML={{
                 __html: `
                 @keyframes ticker {

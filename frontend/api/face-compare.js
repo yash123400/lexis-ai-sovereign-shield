@@ -1,7 +1,13 @@
+import { checkRateLimit } from './_rateLimit.js';
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
+
+    // ── Rate Limiting ─────────────────────────────────────────────────────
+    const allowed = checkRateLimit(req, res, { maxRequests: 5, windowMs: 60_000 });
+    if (!allowed) return;
 
     const { image_url1, image_url2 } = req.body;
 
@@ -9,12 +15,21 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing image_url1 or image_url2' });
     }
 
-    const api_key = 'P9KI7HZkrLEIYXU88Yl_7L3Nb2fi6n8n';
-    const api_secret = '28PPqxpCKTpsna4-Zhs7JOacs6_SvpAr';
+    // ── FIX 1.2: No hardcoded fallbacks — env vars only ──────────────────
+    const api_key = process.env.FACEPP_API_KEY;
+    const api_secret = process.env.FACEPP_API_SECRET;
+
+    if (!api_key || !api_secret) {
+        console.error('[face-compare] CRITICAL: Face++ API credentials not configured.');
+        return res.status(503).json({
+            success: false,
+            status: 'Red',
+            error: 'Biometric service unavailable. Please contact your solicitor.',
+        });
+    }
 
     try {
-        // --- TASK 2: LIVENESS & SPOOFING DETECTION ---
-        // Using face detect API with return_attributes=liveness on the live selfie (image_url2)
+        // ── LIVENESS DETECTION ────────────────────────────────────────────
         const detectFormData = new URLSearchParams({
             api_key,
             api_secret,
@@ -22,37 +37,43 @@ export default async function handler(req, res) {
             return_attributes: 'liveness'
         });
 
-        const detectUrl = 'https://api-us.faceplusplus.com/facepp/v3/detect';
-        let detectRes = await fetch(detectUrl, {
+        const detectRes = await fetch('https://api-us.faceplusplus.com/facepp/v3/detect', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: detectFormData
         });
 
         const detectData = await detectRes.json();
-        let livenessScore = 100; // Default high pass if the standard API structure is missing
+        let livenessScore = null;
 
         if (detectData && detectData.faces && detectData.faces.length > 0) {
             const liveness = detectData.faces[0].attributes?.liveness;
-            if (liveness) {
-                // Megvii returns probabilities of spoofing. Real face score = 100 - max(fake) 
-                // Assuming the logic fuse is testing for liveness *confidence* < 80.0
-                // If liveness returns something else, we will map safely. Wait, if it's the specific Face++ liveness api, probabilities come like this: fake: 10, software_fake: 0.1
-                const fakeScore = Math.max(liveness.probability.fake, liveness.probability.software_fake || 0);
+            if (liveness && liveness.probability) {
+                const fakeScore = Math.max(
+                    liveness.probability.fake,
+                    liveness.probability.software_fake || 0
+                );
                 livenessScore = 100 - fakeScore;
             }
         } else if (detectData.error_message) {
-            // If standard detects don't support return_attributes=liveness without special access, 
-            // simulate the check based on prompt instructions gracefully so the demo doesn't crash 500.
-            if (detectData.error_message.includes('BAD_ARGUMENTS')) {
-                livenessScore = 99.5; // Simulate Success fallback
-            } else {
-                throw new Error(detectData.error_message);
-            }
+            // ── FIX 2.4: ALL Face++ errors block — no fake 99.5 fallback ──
+            console.error('[face-compare] Detect API error:', detectData.error_message);
+            return res.status(403).json({
+                success: false,
+                status: 'Red',
+                error: 'Liveness detection could not be completed. Please upload a clear, well-lit photo.',
+            });
+        } else {
+            // No face detected
+            return res.status(400).json({
+                success: false,
+                status: 'Red',
+                error: 'No face detected in the provided image.',
+            });
         }
 
-        // Logic Fuse
-        if (livenessScore < 80.0) {
+        // Liveness gate
+        if (livenessScore !== null && livenessScore < 80.0) {
             return res.status(403).json({
                 success: false,
                 status: 'Red',
@@ -61,7 +82,7 @@ export default async function handler(req, res) {
             });
         }
 
-        // --- TASK 1: THE DUAL-IMAGE HANDSHAKE (COMPARE API) ---
+        // ── FACE COMPARISON ───────────────────────────────────────────────
         const compareFormData = new URLSearchParams({
             api_key,
             api_secret,
@@ -69,8 +90,7 @@ export default async function handler(req, res) {
             image_url2
         });
 
-        const compareUrl = 'https://api-us.faceplusplus.com/facepp/v3/compare';
-        let compareRes = await fetch(compareUrl, {
+        const compareRes = await fetch('https://api-us.faceplusplus.com/facepp/v3/compare', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: compareFormData
@@ -85,7 +105,6 @@ export default async function handler(req, res) {
         const confidence = compareData.confidence;
         const request_id = compareData.request_id;
 
-        // --- TASK 3: CONFIDENCE THRESHOLDING ---
         let status = 'Red';
         if (confidence > 80.0) {
             status = 'Green';
@@ -93,17 +112,19 @@ export default async function handler(req, res) {
             status = 'Amber';
         }
 
-        // --- TASK 4: THE AUDIT SIGNATURE ---
         return res.status(200).json({
             success: true,
             status,
-            confidence: confidence,
-            request_id: request_id,
+            confidence,
+            request_id,
             livenessScore
         });
 
     } catch (error) {
-        console.error("Face++ API Error:", error);
-        return res.status(500).json({ success: false, error: 'Biometric API Handshake Failed', details: error.message });
+        console.error('[face-compare] API Error:', error);
+        return res.status(500).json({
+            success: false,
+            error: 'Biometric verification failed. Please try again.',
+        });
     }
 }

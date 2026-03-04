@@ -37,17 +37,24 @@ export default function IntakeReview() {
         role: string | null;
         source: string | null;
     }>({ status: 'pending', entity_name: null, role: null, source: null });
+    // FIX 3.5: Per-data-type loading and error states
+    const [isLoadingEntity, setIsLoadingEntity] = useState(true);
+    const [entityError, setEntityError] = useState<string | null>(null);
 
     const [conflictData, setConflictData] = useState<{
         level: 'clear' | 'amber' | 'red';
         description: string | null;
         reference: string | null;
     }>({ level: 'clear', description: null, reference: null });
+    const [isLoadingConflict, setIsLoadingConflict] = useState(true);
+    const [conflictError, setConflictError] = useState<string | null>(null);
 
     const [reasoningInsight, setReasoningInsight] = useState<{
         text: string | null;
         document_ref: string | null;
     }>({ text: null, document_ref: null });
+    const [isLoadingReasoning, setIsLoadingReasoning] = useState(true);
+    const [reasoningError, setReasoningError] = useState<string | null>(null);
 
     type StepState = 'complete' | 'active' | 'pending' | 'error';
 
@@ -72,34 +79,65 @@ export default function IntakeReview() {
     }, [biometricData.confidence, biometricData.loading]);
 
     useEffect(() => {
-        const fetchIntakeData = async () => {
+        // FIX 3.5: Each fetch has its own loading + error state for proper skeleton/error UX
+        const fetchEntity = async () => {
+            setIsLoadingEntity(true);
+            setEntityError(null);
             try {
-                const entityRes = await fetch(`/api/entity-check?intake_id=${intakeId}`).catch(() => null);
-                if (entityRes && entityRes.ok) {
+                const entityRes = await fetch(`/api/entity-check?intake_id=${intakeId}`);
+                if (entityRes.ok) {
                     const data = await entityRes.json();
                     setEntityData(data);
                     if (data.status === 'verified') setTrustStatus(prev => ({ ...prev, aml: 'complete' }));
+                } else {
+                    setEntityError('Entity screening data unavailable');
                 }
-            } catch (_) { }
-
-            try {
-                const conflictRes = await fetch(`/api/conflict-check?intake_id=${intakeId}`).catch(() => null);
-                if (conflictRes && conflictRes.ok) {
-                    const data = await conflictRes.json();
-                    setConflictData(data);
-                }
-            } catch (_) { }
-
-            try {
-                const reasoningRes = await fetch(`/api/reasoning-insight?intake_id=${intakeId}`).catch(() => null);
-                if (reasoningRes && reasoningRes.ok) {
-                    const data = await reasoningRes.json();
-                    setReasoningInsight(data);
-                }
-            } catch (_) { }
+            } catch {
+                setEntityError('Entity screening service unreachable');
+            } finally {
+                setIsLoadingEntity(false);
+            }
         };
 
-        fetchIntakeData();
+        const fetchConflict = async () => {
+            setIsLoadingConflict(true);
+            setConflictError(null);
+            try {
+                const conflictRes = await fetch(`/api/conflict-check?intake_id=${intakeId}`);
+                if (conflictRes.ok) {
+                    const data = await conflictRes.json();
+                    setConflictData(data);
+                } else {
+                    setConflictError('Conflict data unavailable');
+                }
+            } catch {
+                setConflictError('Conflict check service unreachable');
+            } finally {
+                setIsLoadingConflict(false);
+            }
+        };
+
+        const fetchReasoning = async () => {
+            setIsLoadingReasoning(true);
+            setReasoningError(null);
+            try {
+                const reasoningRes = await fetch(`/api/reasoning-insight?intake_id=${intakeId}`);
+                if (reasoningRes.ok) {
+                    const data = await reasoningRes.json();
+                    setReasoningInsight(data);
+                } else {
+                    setReasoningError('Reasoning insight unavailable');
+                }
+            } catch {
+                setReasoningError('Reasoning service unreachable');
+            } finally {
+                setIsLoadingReasoning(false);
+            }
+        };
+
+        fetchEntity();
+        fetchConflict();
+        fetchReasoning();
     }, [intakeId]);
 
     const handleVisionVerified = (result: { confidence: number; request_id: string; status: string; livenessScore: number }) => {
@@ -303,9 +341,27 @@ export default function IntakeReview() {
                                 <SovereignSnapshot
                                     clientData={{ id: intakeId }}
                                     biometricData={biometricData}
-                                    entityData={entityData}
-                                    conflictData={conflictData}
-                                    reasoningInsight={reasoningInsight}
+                                    entityData={
+                                        isLoadingEntity
+                                            ? { status: 'pending', entity_name: null, role: 'Loading...', source: null }
+                                            : entityError
+                                                ? { status: 'failed', entity_name: null, role: entityError, source: null }
+                                                : entityData
+                                    }
+                                    conflictData={
+                                        isLoadingConflict
+                                            ? { level: 'clear', description: 'Loading conflict data...', reference: null }
+                                            : conflictError
+                                                ? { level: 'amber', description: conflictError, reference: null }
+                                                : conflictData
+                                    }
+                                    reasoningInsight={
+                                        isLoadingReasoning
+                                            ? { text: null, document_ref: null }
+                                            : reasoningError
+                                                ? { text: reasoningError, document_ref: null }
+                                                : reasoningInsight
+                                    }
                                     onApprove={() => handleAction('sync')}
                                     onFlag={() => handleAction('flag')}
                                 />
