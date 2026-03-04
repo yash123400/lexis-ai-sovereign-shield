@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
-import Spline from '@splinetool/react-spline';
+import { lazy, Suspense } from 'react';
 import { ShieldCheck, BarChart4, Building2, RefreshCw, XCircle } from 'lucide-react';
+
+const Spline = lazy(() => import('@splinetool/react-spline'));
 
 interface FadeInProps {
     children: React.ReactNode;
@@ -30,7 +32,19 @@ export default function About() {
                 {/* Left: Interactive Orb (Light variation) */}
                 <div className="md:w-1/3 h-64 md:h-96 w-full flex items-center justify-center relative mb-12 md:mb-0 grayscale opacity-40">
                     <div className="absolute inset-0 pointer-events-none rounded-full blur-[120px] bg-london-blue/10" />
-                    <Spline scene="https://prod.spline.design/4tuh3W7pu-zpL4Bp/scene.splinecode" />
+                    <style>{`
+                        .spline-about canvas,
+                        .spline-about > div,
+                        .spline-about > div > canvas {
+                            width: 100% !important;
+                            height: 100% !important;
+                        }
+                    `}</style>
+                    <div className="spline-about" style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
+                        <Suspense fallback={<div className="w-full h-full bg-slate-50 animate-pulse rounded-full" />}>
+                            <Spline scene="https://prod.spline.design/4tuh3W7pu-zpL4Bp/scene.splinecode" />
+                        </Suspense>
+                    </div>
                 </div>
 
                 {/* Right: The Hook texts */}

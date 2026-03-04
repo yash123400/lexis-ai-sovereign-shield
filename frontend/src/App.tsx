@@ -1,12 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import About from './About';
 import Onboarding from './Onboarding';
 import AdminDashboard from './AdminDashboard';
 import AdminLogin from './AdminLogin';
 import ClientIntake from './ClientIntake';
-import Spline from '@splinetool/react-spline';
 import { ShieldAlert, CheckCircle, Fingerprint, Lock, FileText, Database, Terminal } from 'lucide-react';
+
+const Spline = lazy(() => import('@splinetool/react-spline'));
+
+// Spline placeholder while loading
+const SplinePlaceholder = () => (
+  <div className="w-full h-full flex items-center justify-center">
+    <div className="w-32 h-32 rounded-full border border-slate-100 animate-pulse bg-slate-50" />
+  </div>
+);
 
 // Fade in component for scroll animations
 interface FadeInProps {
@@ -36,8 +44,20 @@ export function Home() {
 
         {/* Spline Background with light overlay */}
         <div className="absolute md:inset-0 inset-x-0 top-0 h-1/2 md:h-full z-0 pointer-events-none md:pointer-events-auto overflow-hidden opacity-80">
-          <div className="absolute top-0 left-0 w-full h-[calc(100%+80px)] grayscale">
-            <Spline scene="https://prod.spline.design/4tuh3W7pu-zpL4Bp/scene.splinecode" />
+          <div className="absolute top-0 left-0 w-full h-[calc(100%+80px)] grayscale" style={{ position: 'relative' }}>
+            <style>{`
+              .spline-hero canvas,
+              .spline-hero > div,
+              .spline-hero > div > canvas {
+                width: 100% !important;
+                height: 100% !important;
+              }
+            `}</style>
+            <div className="spline-hero" style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
+              <Suspense fallback={<SplinePlaceholder />}>
+                <Spline scene="https://prod.spline.design/4tuh3W7pu-zpL4Bp/scene.splinecode" />
+              </Suspense>
+            </div>
           </div>
           <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
         </div>

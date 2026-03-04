@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Spline from '@splinetool/react-spline';
 import { Shield, Calendar, Database, CheckCircle, ArrowRight, Loader2 } from 'lucide-react';
+
+const Spline = lazy(() => import('@splinetool/react-spline'));
 
 export default function Onboarding() {
     const [step, setStep] = useState(1);
@@ -108,7 +109,19 @@ export default function Onboarding() {
                         className="absolute inset-0 transition-all duration-1000 ease-in-out"
                         style={{ filter: getOrbFilter() }}
                     >
-                        <Spline scene="https://prod.spline.design/4tuh3W7pu-zpL4Bp/scene.splinecode" />
+                        <style>{`
+                            .spline-onboard canvas,
+                            .spline-onboard > div,
+                            .spline-onboard > div > canvas {
+                                width: 100% !important;
+                                height: 100% !important;
+                            }
+                        `}</style>
+                        <div className="spline-onboard" style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
+                            <Suspense fallback={<div className="w-full h-full bg-slate-50 animate-pulse rounded-full" />}>
+                                <Spline scene="https://prod.spline.design/4tuh3W7pu-zpL4Bp/scene.splinecode" />
+                            </Suspense>
+                        </div>
                     </div>
                     {/* Inner glowing pulse based on step */}
                     <div className={`absolute w-64 h-64 rounded-full blur-[120px] pointer-events-none transition-colors duration-1000 
