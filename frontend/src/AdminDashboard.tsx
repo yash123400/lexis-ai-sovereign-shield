@@ -277,7 +277,7 @@ export default function AdminDashboard() {
                             index="date"
                             categories={['Confidence Score', 'Financial Alpha']}
                             colors={['blue', 'emerald']}
-                            valueFormatter={(number) => `${number.toString()}%`}
+                            valueFormatter={(number: number) => `${number.toString()}%`}
                             showYAxis={false}
                             showGridLines={false}
                             showLegend={false}

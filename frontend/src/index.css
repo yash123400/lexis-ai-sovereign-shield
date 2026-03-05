@@ -52,10 +52,7 @@ div[class*="spline-watermark"],
   height: 0 !important;
 }
 
-/* Global Transition */
-* {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-}
+/* Transitions are applied per-component for performance */
 
 /* ── Spline 3D Runtime Fix ─────────────────────────────────
    The @splinetool/react-spline runtime renders an internal <canvas>

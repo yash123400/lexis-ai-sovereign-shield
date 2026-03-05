@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import About from './About';
 import Onboarding from './Onboarding';
@@ -7,14 +7,7 @@ import AdminLogin from './AdminLogin';
 import ClientIntake from './ClientIntake';
 import { ShieldAlert, CheckCircle, Fingerprint, Lock, FileText, Database, Terminal } from 'lucide-react';
 
-const Spline = lazy(() => import('@splinetool/react-spline'));
 
-// Spline placeholder while loading
-const SplinePlaceholder = () => (
-  <div className="w-full h-full flex items-center justify-center">
-    <div className="w-32 h-32 rounded-full border border-slate-100 animate-pulse bg-slate-50" />
-  </div>
-);
 
 // Fade in component for scroll animations
 interface FadeInProps {
@@ -48,30 +41,21 @@ export function Home() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: "easeOut" }}
-              className="text-4xl sm:text-5xl md:text-7xl font-sans font-bold leading-tight tracking-tight mb-8 text-white shadow-sm"
+              className="text-4xl sm:text-5xl md:text-7xl font-serif font-bold leading-tight tracking-tight mb-8 text-white"
             >
-              The Lexis-AI <span className="text-london-blue">Orchestrator.</span><br className="hidden md:block" />
-              Sovereign Legal Intelligence.
+              The intelligent legal <span className="text-london-blue">concierge.</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-              className="text-lg md:text-2xl text-slate-300 md:leading-relaxed mb-8 max-w-xl font-medium"
+              className="text-lg md:text-xl text-slate-400 md:leading-relaxed mb-10 max-w-xl font-medium"
             >
-              The first full-stack legal concierge for the 2026 Sovereign Grid. <br className="hidden md:block" />
-              Intelligent Intake. OTP Identity Tethering. Real-time Conflict Monitoring.
+              End-to-end compliance orchestration for modern law firms. Intelligent intake, identity verification, and real-time conflict monitoring — all in one platform.
             </motion.p>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
-              className="text-[10px] text-london-blue mb-12 max-w-3xl border border-london-blue/20 px-6 py-2 rounded-full font-bold uppercase tracking-[0.3em] bg-london-blue/5"
-            >
-              * Orbital scan active. Sovereignty confirmed. *
-            </motion.p>
+
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -79,7 +63,7 @@ export function Home() {
               transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
               className="flex flex-col sm:flex-row flex-wrap justify-start items-center gap-6 w-full"
             >
-              <a href="https://calendly.com/lexis-ai-partner/15min" target="_blank" rel="noopener noreferrer" className="px-10 py-5 w-full sm:w-auto bg-london-blue text-white font-bold uppercase tracking-widest text-xs text-center rounded-lg hover:bg-slate-800 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_rgba(255,255,255,0.5)] transform active:scale-95">
+              <a href="https://calendly.com/lexis-ai-partner/15min" target="_blank" rel="noopener noreferrer" className="px-10 py-5 w-full sm:w-auto bg-london-blue text-white font-bold uppercase tracking-widest text-xs text-center rounded-lg hover:bg-slate-800 transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95">
                 Request a Workflow Audit
               </a>
               <a href="https://lexis-ai-compliance-concierge.vercel.app/" target="_blank" rel="noopener noreferrer" className="px-10 py-5 w-full sm:w-auto text-center bg-white/5 border border-white/20 text-white font-bold uppercase tracking-widest text-xs rounded-lg hover:bg-white/10 transition-all duration-300 shadow-md">
@@ -93,18 +77,39 @@ export function Home() {
           </div>
         </div>
 
-        {/* Right Side: Spline 3D */}
-        <div className="relative w-full md:w-1/2 h-1/2 md:h-full z-0 overflow-hidden flex items-center justify-center">
-          <style>{`
-            .spline-hero canvas {
-              width: 100% !important;
-              height: 100% !important;
-            }
-          `}</style>
-          <div className="spline-hero w-full h-full scale-110 translate-x-12">
-            <Suspense fallback={<SplinePlaceholder />}>
-              <Spline scene="https://prod.spline.design/4tuh3W7pu-zpL4Bp/scene.splinecode" />
-            </Suspense>
+        {/* Right Side: Abstract HUD Preview */}
+        <div className="relative w-full md:w-1/2 h-1/2 md:h-full z-0 flex items-center justify-center p-6 md:p-12">
+          <div className="w-full max-w-sm grid grid-cols-2 gap-3 opacity-40 hover:opacity-60 transition-opacity duration-700">
+            <div className="bg-white/5 border border-white/10 rounded-xl p-5 backdrop-blur-sm">
+              <p className="text-[9px] uppercase tracking-widest text-slate-500 mb-2 font-bold">Confidence</p>
+              <p className="text-2xl font-bold text-white font-mono">94.2<span className="text-sm text-slate-500">%</span></p>
+              <div className="w-full bg-white/10 rounded-full h-1 mt-3"><div className="bg-emerald-400/50 h-full rounded-full w-[94%]"></div></div>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-xl p-5 backdrop-blur-sm">
+              <p className="text-[9px] uppercase tracking-widest text-slate-500 mb-2 font-bold">Active Matters</p>
+              <p className="text-2xl font-bold text-white font-mono">127</p>
+              <p className="text-[10px] text-emerald-400/60 mt-2 font-medium">+12 this week</p>
+            </div>
+            <div className="col-span-2 bg-white/5 border border-white/10 rounded-xl p-5 backdrop-blur-sm">
+              <p className="text-[9px] uppercase tracking-widest text-slate-500 mb-3 font-bold">Network Alpha</p>
+              <div className="flex items-end gap-1 h-10">
+                {[40, 55, 45, 65, 50, 70, 60, 80, 75, 85, 70, 90].map((h, i) => (
+                  <div key={i} className="flex-1 bg-london-blue/40 rounded-t-sm" style={{ height: `${h}%` }} />
+                ))}
+              </div>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-xl p-5 backdrop-blur-sm">
+              <p className="text-[9px] uppercase tracking-widest text-slate-500 mb-2 font-bold">AML Check</p>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="w-2 h-2 rounded-full bg-emerald-400/60" />
+                <p className="text-sm font-bold text-white">Cleared</p>
+              </div>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-xl p-5 backdrop-blur-sm">
+              <p className="text-[9px] uppercase tracking-widest text-slate-500 mb-2 font-bold">Intake Queue</p>
+              <p className="text-2xl font-bold text-white font-mono">3</p>
+              <p className="text-[10px] text-slate-500 mt-1 font-medium">Pending review</p>
+            </div>
           </div>
         </div>
       </section>

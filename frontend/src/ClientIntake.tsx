@@ -234,22 +234,22 @@ export default function ClientIntake() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-london-blue selection:text-white pb-32">
+        <div className="min-h-screen bg-slate-950 font-sans text-slate-200 selection:bg-london-blue selection:text-white pb-32">
             {/* --- INSTITUTIONAL HEADER --- */}
-            <header className="bg-white border-b border-slate-100 py-10 px-10 mb-20 shadow-sm relative overflow-hidden">
+            <header className="bg-slate-950 border-b border-white/10 py-10 px-10 mb-20 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-london-blue"></div>
                 <div className="max-w-5xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-6">
-                        <div className="w-14 h-14 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 shadow-sm">
+                        <div className="w-14 h-14 bg-slate-950 rounded-full flex items-center justify-center border border-white/10 shadow-sm">
                             <Shield className="text-london-blue" size={30} />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-serif font-bold text-slate-900 tracking-tight">Sovereign Portal</h1>
+                            <h1 className="text-3xl font-serif font-bold text-slate-100 tracking-tight">Sovereign Portal</h1>
                             <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400 font-bold mt-1">Lexis-AI Private Client Gate</p>
                         </div>
                     </div>
                     {matterId && (
-                        <div className="text-right border-l border-slate-100 pl-8">
+                        <div className="text-right border-l border-white/10 pl-8">
                             <p className="text-[10px] uppercase tracking-widest text-slate-300 font-bold mb-1.5">Matter Reference</p>
                             <p className="font-mono text-lg font-bold text-london-blue tracking-tighter">{matterId}</p>
                         </div>
@@ -264,10 +264,10 @@ export default function ClientIntake() {
                         <motion.div
                             key="verifying"
                             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                            className="flex flex-col items-center justify-center py-40 bg-white rounded-sm border border-slate-100 shadow-2xl text-center"
+                            className="flex flex-col items-center justify-center py-40 bg-slate-950 rounded-sm border border-white/10 shadow-2xl text-center"
                         >
                             <Loader2 className="animate-spin text-london-blue mb-8 opacity-20" size={56} />
-                            <h2 className="text-3xl font-serif font-bold text-slate-900 mb-3 tracking-tight">Establishing Handshake</h2>
+                            <h2 className="text-3xl font-serif font-bold text-slate-100 mb-3 tracking-tight">Establishing Handshake</h2>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em]">Synchronizing Secure Sovereign Layer</p>
                         </motion.div>
                     )}
@@ -277,12 +277,12 @@ export default function ClientIntake() {
                         <motion.div
                             key="error"
                             initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
-                            className="bg-white border border-red-100 rounded-sm p-16 text-center shadow-2xl max-w-2xl mx-auto"
+                            className="bg-slate-950 border border-red-100 rounded-sm p-16 text-center shadow-2xl max-w-2xl mx-auto"
                         >
                             <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-10 border border-red-100 shadow-sm">
                                 <AlertTriangle className="text-red-500" size={40} />
                             </div>
-                            <h2 className="text-3xl font-serif font-bold text-slate-900 mb-4 tracking-tight">Gateway Failure</h2>
+                            <h2 className="text-3xl font-serif font-bold text-slate-100 mb-4 tracking-tight">Gateway Failure</h2>
                             <p className="text-slate-500 font-medium leading-relaxed mb-12">
                                 The secure validation layer is currently unreachable. Your materials remain protected. Please re-initiate the session.
                             </p>
@@ -300,12 +300,12 @@ export default function ClientIntake() {
                         <motion.div
                             key="expired"
                             initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
-                            className="bg-white border border-slate-100 rounded-sm p-24 text-center shadow-2xl max-w-2xl mx-auto"
+                            className="bg-[#0a0b10]/90 backdrop-blur-md border border-white/10 rounded-sm p-24 text-center shadow-2xl max-w-2xl mx-auto"
                         >
-                            <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-12 border border-slate-100">
+                            <div className="w-24 h-24 bg-slate-950 rounded-full flex items-center justify-center mx-auto mb-12 border border-white/10">
                                 <Shield className="text-slate-200" size={48} />
                             </div>
-                            <h2 className="text-4xl font-serif font-bold text-slate-900 mb-6 tracking-tight">Session Terminated</h2>
+                            <h2 className="text-4xl font-serif font-bold text-slate-100 mb-6 tracking-tight">Session Terminated</h2>
                             <p className="text-slate-500 mb-16 leading-relaxed font-medium">
                                 For UK-GDPR compliance and entity protection, this sovereign link has been automatically expired.
                                 Please contact your instructing solicitor to establish a new encrypted identity token.
@@ -323,14 +323,14 @@ export default function ClientIntake() {
                             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
                             className="space-y-12"
                         >
-                            <div className="bg-white border-l-4 border-london-blue p-12 shadow-2xl rounded-sm">
-                                <h2 className="text-3xl font-serif font-bold text-slate-900 mb-4 tracking-tight">Identity Mandatory</h2>
+                            <div className="bg-[#0a0b10]/90 backdrop-blur-md border border-white/10 p-12 shadow-2xl rounded-sm">
+                                <h2 className="text-3xl font-serif font-bold text-slate-100 mb-4 tracking-tight">Identity Mandatory</h2>
                                 <p className="text-slate-500 font-medium leading-relaxed max-w-2xl text-base">
                                     Before depositing materials into the sovereign vault, you must establish your digital identity.
                                     This biometric handshake ensures zero-knowledge proof of authorship for all submitted evidence.
                                 </p>
                             </div>
-                            <div className="bg-white p-2 border border-slate-100 rounded-sm shadow-2xl">
+                            <div className="bg-slate-950 p-2 border border-white/10 rounded-sm shadow-2xl">
                                 <VisionGate onVerified={handleVerified} onFailed={handleVerificationFailed} />
                             </div>
                         </motion.div>
@@ -341,20 +341,20 @@ export default function ClientIntake() {
                         <motion.div
                             key="upload"
                             initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
-                            className="bg-white border border-slate-100 rounded-sm shadow-2xl overflow-hidden"
+                            className="bg-[#0a0b10]/90 backdrop-blur-md border border-white/10 rounded-sm shadow-2xl overflow-hidden"
                         >
-                            <div className="bg-slate-50 border-b border-slate-100 p-12 flex items-center gap-6 relative">
+                            <div className="bg-slate-950 border-b border-white/10 p-12 flex items-center gap-6 relative">
                                 <div className="absolute top-0 left-0 w-full h-1 bg-london-blue"></div>
-                                <div className="p-4 bg-white border border-slate-100 rounded-sm shadow-sm">
+                                <div className="p-4 bg-[#0a0b10]/90 backdrop-blur-md border border-white/10 rounded-sm shadow-sm">
                                     <Lock className="text-london-blue" size={28} />
                                 </div>
                                 <div>
-                                    <h2 className="text-2xl font-serif font-bold text-slate-900 mb-1 tracking-tight">Sovereign Vault Access</h2>
+                                    <h2 className="text-2xl font-serif font-bold text-slate-100 mb-1 tracking-tight">Sovereign Vault Access</h2>
                                     <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">End-to-End Encrypted | UK Data Residency</p>
                                 </div>
-                                <div className="ml-auto flex items-center gap-3 bg-white px-4 py-2 border border-slate-100 rounded-full shadow-sm">
-                                    <CheckCircle size={14} className="text-emerald-500" />
-                                    <span className="text-[9px] text-emerald-600 uppercase tracking-widest font-bold">Identity Verified</span>
+                                <div className="ml-auto flex items-center gap-3 bg-slate-950 px-4 py-2 border border-white/10 rounded-full shadow-sm">
+                                    <CheckCircle size={14} className="text-[#B59410]" />
+                                    <span className="text-[9px] text-[#B59410] uppercase tracking-widest font-bold">Identity Verified</span>
                                 </div>
                             </div>
 
@@ -369,7 +369,7 @@ export default function ClientIntake() {
                                         handleFiles(e.dataTransfer.files);
                                     }}
                                     onClick={() => fileInputRef.current?.click()}
-                                    className={`relative border-2 border-dashed rounded-sm p-24 text-center transition-all cursor-pointer group ${isDragging ? 'border-london-blue bg-blue-50/20' : 'border-slate-100 hover:border-london-blue hover:bg-slate-50'
+                                    className={`relative border-2 border-dashed rounded-sm p-24 text-center transition-all cursor-pointer group ${isDragging ? 'border-london-blue bg-blue-50/20' : 'border-white/10 hover:border-london-blue hover:bg-slate-950'
                                         }`}
                                 >
                                     <input
@@ -379,13 +379,13 @@ export default function ClientIntake() {
                                         className="hidden"
                                         onChange={(e) => handleFiles(e.target.files)}
                                     />
-                                    <div className="h-20 w-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-slate-100 group-hover:bg-white transition-all shadow-sm">
+                                    <div className="h-20 w-20 bg-slate-950 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/10 group-hover:bg-slate-950 transition-all shadow-sm">
                                         <Upload className={`transition-colors ${isDragging ? 'text-london-blue' : 'text-slate-300 group-hover:text-london-blue'}`} size={32} />
                                     </div>
-                                    <h3 className="text-2xl font-serif font-bold text-slate-900 mb-3">Deposit Materials</h3>
+                                    <h3 className="text-2xl font-serif font-bold text-slate-100 mb-3">Deposit Materials</h3>
                                     <p className="text-slate-400 font-medium text-sm">Transfer files into the secure sovereign tray</p>
                                     <div className="flex items-center justify-center gap-6 mt-8">
-                                        <span className="text-[9px] text-slate-300 uppercase tracking-[0.2em] font-bold border-r border-slate-100 pr-6">PDF / JPEG / PNG</span>
+                                        <span className="text-[9px] text-slate-300 uppercase tracking-[0.2em] font-bold border-r border-white/10 pr-6">PDF / JPEG / PNG</span>
                                         <span className="text-[9px] text-slate-300 uppercase tracking-[0.2em] font-bold">10MB Max per asset</span>
                                     </div>
                                 </div>
@@ -398,13 +398,13 @@ export default function ClientIntake() {
                                                 <motion.div
                                                     key={file.name + i}
                                                     initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 15 }}
-                                                    className="flex items-center gap-6 bg-slate-50 border border-slate-100 rounded-sm p-6 group"
+                                                    className="flex items-center gap-6 bg-[#0a0b10]/60 backdrop-blur-md border border-white/10 rounded-sm p-6 group"
                                                 >
-                                                    <div className="h-10 w-10 bg-white border border-slate-100 rounded-sm flex items-center justify-center shadow-sm">
-                                                        {file.status === 'complete' ? <CheckCircle className="text-emerald-500" size={18} /> : file.status === 'error' ? <AlertTriangle className="text-red-500" size={18} /> : <FileText className="text-slate-300" size={18} />}
+                                                    <div className="h-10 w-10 bg-[#0a0b10]/90 backdrop-blur-md border border-white/10 rounded-sm flex items-center justify-center shadow-sm">
+                                                        {file.status === 'complete' ? <CheckCircle className="text-[#B59410]" size={18} /> : file.status === 'error' ? <AlertTriangle className="text-red-500" size={18} /> : <FileText className="text-slate-300" size={18} />}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="text-sm font-bold text-slate-900 truncate">{file.name}</p>
+                                                        <p className="text-sm font-bold text-slate-100 truncate">{file.name}</p>
                                                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">{(file.size / 1024).toFixed(1)} KB • {file.status}</p>
                                                         {file.status === 'uploading' && (
                                                             <div className="w-full bg-slate-100 rounded-full h-1 mt-3 overflow-hidden">
@@ -415,7 +415,7 @@ export default function ClientIntake() {
                                                             </div>
                                                         )}
                                                     </div>
-                                                    <button onClick={() => removeFile(i)} className="text-slate-300 hover:text-red-500 transition-colors bg-white p-2 rounded-sm border border-slate-100 shadow-sm opacity-0 group-hover:opacity-100">
+                                                    <button onClick={() => removeFile(i)} className="text-slate-300 hover:text-red-500 transition-colors bg-slate-950 p-2 rounded-sm border border-white/10 shadow-sm opacity-0 group-hover:opacity-100">
                                                         <X size={14} />
                                                     </button>
                                                 </motion.div>
@@ -436,17 +436,17 @@ export default function ClientIntake() {
                                                 value={matterContext}
                                                 onChange={(e) => setMatterContext(e.target.value)}
                                                 placeholder="Provide any additional forensic context for the senior counsel review..."
-                                                className="w-full bg-slate-50 border border-slate-100 rounded-sm p-8 text-sm text-slate-900 focus:border-london-blue focus:bg-white outline-none transition-all min-h-[160px] shadow-inner font-medium"
+                                                className="w-full bg-[#0a0b10]/60 backdrop-blur-md border border-white/10 rounded-sm p-8 text-sm text-slate-100 focus:border-london-blue focus:bg-slate-950 outline-none transition-all min-h-[160px] shadow-inner font-medium"
                                             />
                                         </div>
 
                                         <button
                                             onClick={handleSubmit}
                                             disabled={files.length === 0 || files.some(f => f.status !== 'complete')}
-                                            className="w-full bg-london-blue hover:bg-slate-900 text-white font-bold py-6 rounded-sm text-[11px] uppercase tracking-[0.3em] transition-all shadow-2xl flex items-center justify-center gap-4 disabled:opacity-50 group"
+                                            className="w-full bg-[#0a0b10] hover:bg-white/5 text-slate-200 font-bold py-6 px-10 rounded-sm text-[11px] uppercase tracking-[0.3em] transition-all border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,255,255,0.1)] active:scale-95 flex items-center justify-center gap-4 disabled:opacity-50 group"
                                         >
                                             <Lock size={18} className="group-hover:scale-110 transition-transform" strokeWidth={2.5} />
-                                            Establish Secure Handover
+                                            BEGIN DATA UPLOAD
                                         </button>
                                         <div className="flex items-center justify-center gap-4">
                                             <div className="h-px bg-slate-100 flex-1"></div>
@@ -466,10 +466,10 @@ export default function ClientIntake() {
                         <motion.div
                             key="submitting_state"
                             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                            className="flex flex-col items-center justify-center py-40 bg-white rounded-sm border border-slate-100 shadow-2xl text-center"
+                            className="flex flex-col items-center justify-center py-40 bg-slate-950 rounded-sm border border-white/10 shadow-2xl text-center"
                         >
                             <Loader2 className="animate-spin text-london-blue mb-10 opacity-20" size={64} />
-                            <h2 className="text-3xl font-serif font-bold text-slate-900 mb-3 tracking-tight">Finalizing Synthesis</h2>
+                            <h2 className="text-3xl font-serif font-bold text-slate-100 mb-3 tracking-tight">Finalizing Synthesis</h2>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em]">Generating Cryptographic Handover Protocol</p>
                         </motion.div>
                     )}
@@ -479,24 +479,24 @@ export default function ClientIntake() {
                         <motion.div
                             key="submitted"
                             initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
-                            className="bg-white border border-slate-100 rounded-sm p-24 text-center shadow-2xl max-w-2xl mx-auto overflow-hidden relative"
+                            className="bg-[#0a0b10]/90 backdrop-blur-md border border-white/10 rounded-sm p-24 text-center shadow-2xl max-w-2xl mx-auto overflow-hidden relative"
                         >
-                            <div className="absolute top-0 left-0 w-full h-2 bg-emerald-500"></div>
-                            <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-12 border border-emerald-100 shadow-sm">
-                                <CheckCircle className="text-emerald-500" size={48} />
+                            <div className="absolute top-0 left-0 w-full h-2 bg-[#B59410]/100"></div>
+                            <div className="w-24 h-24 bg-[#B59410]/10 rounded-full flex items-center justify-center mx-auto mb-12 border border-[#B59410]/20 shadow-sm">
+                                <CheckCircle className="text-[#B59410]" size={48} />
                             </div>
-                            <h2 className="text-4xl font-serif font-bold text-slate-900 mb-6 tracking-tight">Handover Complete</h2>
+                            <h2 className="text-4xl font-serif font-bold text-slate-100 mb-6 tracking-tight">Handover Complete</h2>
                             <p className="text-slate-500 mb-16 leading-relaxed font-medium text-lg">
                                 Your items have been hashed, encrypted, and successfully deposited into the sovereign vault.
                                 The instructing solicitor has been formally notified.
                             </p>
 
-                            <div className="bg-slate-50 border border-slate-100 rounded-sm p-8 text-left mb-16 shadow-inner">
+                            <div className="bg-[#0a0b10]/60 backdrop-blur-md border border-white/10 rounded-sm p-8 text-left mb-16 shadow-inner">
                                 <div className="flex justify-between items-center text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mb-4">
                                     <span className="flex items-center gap-2"><Database size={12} /> Audit Hash</span>
-                                    <span className="text-emerald-600">Locked</span>
+                                    <span className="text-[#B59410]">Locked</span>
                                 </div>
-                                <p className="font-mono text-xs text-london-blue break-all bg-white p-4 border border-slate-100 rounded-sm shadow-sm leading-relaxed tracking-tighter uppercase">
+                                <p className="font-mono text-xs text-london-blue break-all bg-slate-950 p-4 border border-white/10 rounded-sm shadow-sm leading-relaxed tracking-tighter uppercase">
                                     {verificationResult?.request_id || 'HANDOVER_SIG_0x4F8299_2E'}
                                 </p>
                             </div>
