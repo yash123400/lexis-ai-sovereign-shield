@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 import json
 
-LOG_FILE = os.path.join(os.path.dirname(__file__), 'logs', 'global_sync.log')
+LOG_FILE = '/tmp/logs/global_sync.log'
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 
 class GlobalErrorHandler:
